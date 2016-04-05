@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FeedReport">
+	<select id="select_pv" resultType="Integer" parameterType="RequestsTarget">
+		select sum(pv) from daily_product_pv_report where `date`=#{date} and `platform`=#{platform} and `pr`=#{pr};
+	</select>
+	<select id="select_uv" parameterType="RequestsTarget">
+		select sum(uv) from daily_product_pv_report where `date`=#{date} and `platform`=#{platform} and `pr`=#{pr};
+	</select>
+	<select id="select3" parameterType="RequestsTarget">
+		select sum(uv) from daily_product_pv_report where `date`=#{date} and `platform`=#{platform} and `pr`=#{pr};
+	</select>
+</mapper>
