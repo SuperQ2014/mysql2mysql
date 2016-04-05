@@ -14,9 +14,9 @@ public class Main {
 
 	private static DateGenerator dateGenerate = Enum.valueOf(DateGenerator.class, "REQUIREDDATE");
 	private static String driver = "com.mysql.jdbc.Driver";
-	private static String url = "jdbc:mysql://10.77.96.56:3306/udatastats";
-	private static String usr = "udatastats";
-	private static String pwd = "2014udatastats";
+	private static String url = "jdbc:mysql://*******/******";
+	private static String usr = "********";
+	private static String pwd = "********";
 
 	public static void main(String[] args) {
 
