@@ -14,9 +14,12 @@ public class Main {
 
 	private static DateGenerator dateGenerate = Enum.valueOf(DateGenerator.class, "REQUIREDDATE");
 	private static String driver = "com.mysql.jdbc.Driver";
-	private static String url = "jdbc:mysql://*******/******";
+	private static String url = "jdbc:mysql://********/********";
 	private static String usr = "********";
 	private static String pwd = "********";
+	
+	private static ReportTargetDAO readTimeDAO = new ReportTargetDAO(
+			MyBatisConnectionFactory.getSqlSessionFactory());
 
 	public static void main(String[] args) {
 
@@ -50,12 +53,12 @@ public class Main {
 						sql = con.createStatement();
 						String getRequests = "select sum(pv) from daily_product_pv_report where `service_name`=\"main_feed\" and `date`=\""
 								+ date + "\" and `platform`=\"" + platform + "\" and `pr`=\"" + pr + "\"";
-						String getUv = "select sum(uv) from daily_product_pv_report where `service_name`=\"main_feed\" and `date`=\""
+						String getUv = "select uv from main_feed_uv_reports where `date`=\""
 								+ date + "\" and `platform`=\"" + platform + "\" and `pr`=\"" + pr + "\"";
 						String getImps = "select sum(pv) from uve_daily_report_test where `service_name`=\"main_feed\" and `hc`=\"1\" and `date`=\""
 								+ date + "\" and `platform`=\"" + platform + "\" and `pr` like \"%" + pr + "%\"";
-						String getImps_uv = "select sum(uv) from uve_daily_report_test where `service_name`=\"main_feed\" and `hc`=\"1\" and `date`=\""
-								+ date + "\" and `platform`=\"" + platform + "\" and `pr` like \"%" + pr + "%\"";
+						String getImps_uv = "select imp_uv from main_feed_uv_reports where `date`=\""
+								+ date + "\" and `platform`=\"" + platform + "\" and `pr`=\"" + pr + "\"";
 						String getImp_groups = "select sum(impression_pv) from uve_daily_report_impression where `service_name`=\"main_feed\" and `date`=\""
 								+ date + "\" and `platform`=\"" + platform + "\" and `pr`=\"" + pr + "\"";
 						String getInventory = "select sum(available_pos_sum) from uve_daily_report where `service_name`=\"main_feed\" and `date`=\""
@@ -127,9 +130,7 @@ public class Main {
 						feed_daily_data.setInventory(inventory);
 						feed_daily_data.setUnread_status(unread_status);
 						 
-						ReportTargetDAO readTimeDAO = new ReportTargetDAO(
-						MyBatisConnectionFactory.getSqlSessionFactory());
-						 readTimeDAO.replace(feed_daily_data);
+						readTimeDAO.replace(feed_daily_data);
 						con.close();
 					} catch (SQLException e) {
 						System.out.println("SQL Exception occurs!");
@@ -144,11 +145,11 @@ public class Main {
 					sql = con.createStatement();
 					String getRequests2 = "select sum(pv) from uve_daily_report where `service_name`=\"main_feed\" and `date`=\""
 							+ date + "\" and `platform`=\"" + platform + "\"";
-					String getUv2 = "select sum(uv) from uve_daily_report where `service_name`=\"main_feed\" and `date`=\""
+					String getUv2 = "select uv from main_feed_uv_reports where `pr`=\"all\" and `date`=\""
 							+ date + "\" and `platform`=\"" + platform + "\"";
 					String getImps2 = "select sum(pv) from uve_daily_report_test where `service_name`=\"main_feed\" and `hc`=\"1\" and `date`=\""
 							+ date + "\" and `platform`=\"" + platform + "\"";
-					String getImps_uv2 = "select sum(uv) from uve_daily_report_test where `service_name`=\"main_feed\" and `hc`=\"1\" and `date`=\""
+					String getImps_uv2 = "select imp_uv from main_feed_uv_reports where `pr`=\"all\" and `date`=\""
 							+ date + "\" and `platform`=\"" + platform + "\"";
 					String getImp_groups2 = "select sum(impression_pv) from uve_daily_report_impression where `service_name`=\"main_feed\" and `date`=\""
 							+ date + "\" and `platform`=\"" + platform + "\"";
@@ -220,10 +221,8 @@ public class Main {
 					feed_daily_data.setImp_groups(imp_groups);
 					feed_daily_data.setInventory(inventory);
 					feed_daily_data.setUnread_status(unread_status);
-					 
-					ReportTargetDAO readTimeDAO = new ReportTargetDAO(
-					MyBatisConnectionFactory.getSqlSessionFactory());
-					 readTimeDAO.replace(feed_daily_data);
+					
+					readTimeDAO.replace(feed_daily_data);
 					con.close();
 				} catch (SQLException e) {
 					System.out.println("SQL Exception occurs!");
@@ -237,12 +236,12 @@ public class Main {
 						sql = con.createStatement();
 						String getRequests = "select sum(pv) from daily_product_pv_report where `service_name`=\"main_feed\" and `date`=\""
 								+ date + "\" and `pr`=\"" + pr + "\"";
-						String getUv = "select sum(uv) from daily_product_pv_report where `service_name`=\"main_feed\" and `date`=\""
+						String getUv = "select uv from main_feed_uv_reports where `platform`=\"all\" and `date`=\""
 								+ date + "\" and `pr`=\"" + pr + "\"";
 						String getImps = "select sum(pv) from uve_daily_report_test where `service_name`=\"main_feed\" and `hc`=\"1\" and `date`=\""
 								+ date + "\" and `pr` like \"%" + pr + "%\"";
-						String getImps_uv = "select sum(uv) from uve_daily_report_test where `service_name`=\"main_feed\" and `hc`=\"1\" and `date`=\""
-								+ date + "\" and `pr` like \"%" + pr + "%\"";
+						String getImps_uv = "select imp_uv from main_feed_uv_reports where `platform`=\"all\" and  `date`=\""
+								+ date + "\" and `pr`=\"" + pr + "\"";
 						String getImp_groups = "select sum(impression_pv) from uve_daily_report_impression where `service_name`=\"main_feed\" and `date`=\""
 								+ date + "\" and `pr`=\"" + pr + "\"";
 						String getInventory = "select sum(available_pos_sum) from uve_daily_report where `service_name`=\"main_feed\" and `date`=\""
@@ -313,9 +312,7 @@ public class Main {
 						feed_daily_data.setImp_groups(imp_groups);
 						feed_daily_data.setInventory(inventory);
 						feed_daily_data.setUnread_status(unread_status);
-						 
-						ReportTargetDAO readTimeDAO = new ReportTargetDAO(
-						MyBatisConnectionFactory.getSqlSessionFactory());
+						
 						 readTimeDAO.replace(feed_daily_data);
 						con.close();
 					} catch (SQLException e) {
@@ -331,11 +328,11 @@ public class Main {
 					sql = con.createStatement();
 					String getRequests2 = "select sum(pv) from uve_daily_report where `service_name`=\"main_feed\" and `date`=\""
 							+ date + "\"";
-					String getUv2 = "select sum(uv) from uve_daily_report where `service_name`=\"main_feed\" and `date`=\""
+					String getUv2 = "select uv from main_feed_uv_reports where `pr`=\"all\" and `date`=\""
 							+ date + "\"";
 					String getImps2 = "select sum(pv) from uve_daily_report_test where `service_name`=\"main_feed\" and `hc`=\"1\" and `date`=\""
 							+ date + "\"";
-					String getImps_uv2 = "select sum(uv) from uve_daily_report_test where `service_name`=\"main_feed\" and `hc`=\"1\" and `date`=\""
+					String getImps_uv2 = "select imp_uv from main_feed_uv_reports where `pr`=\"all\"  and `date`=\""
 							+ date + "\"";
 					String getImp_groups2 = "select sum(impression_pv) from uve_daily_report_impression where `service_name`=\"main_feed\" and `date`=\""
 							+ date + "\"";
@@ -407,10 +404,8 @@ public class Main {
 					feed_daily_data.setImp_groups(imp_groups);
 					feed_daily_data.setInventory(inventory);
 					feed_daily_data.setUnread_status(unread_status);
-					 
-					ReportTargetDAO readTimeDAO = new ReportTargetDAO(
-					MyBatisConnectionFactory.getSqlSessionFactory());
-					 readTimeDAO.replace(feed_daily_data);
+					
+					readTimeDAO.replace(feed_daily_data);
 					con.close();
 				} catch (SQLException e) {
 					System.out.println("SQL Exception occurs!");
